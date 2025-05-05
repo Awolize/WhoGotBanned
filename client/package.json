@@ -1,28 +1,31 @@
 {
-  "name": "client",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint --cache src",
-    "start": "vite preview"
-  },
-  "dependencies": {
-    "@tanstack/react-query": "catalog:",
-    "@trpc/client": "catalog:",
-    "@trpc/server": "catalog:",
-    "@trpc/tanstack-react-query": "catalog:",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
-  },
-  "devDependencies": {
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.26.0",
-    "typescript": "^5.8.2",
-    "vite": "^6.1.1"
-  },
-  "version": "11.1.2"
+	"name": "client",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"lint": "eslint --cache src",
+		"start": "vite preview"
+	},
+	"dependencies": {
+		"@tailwindcss/vite": "^4.1.5",
+		"@tanstack/react-query": "catalog:",
+		"@trpc/client": "catalog:",
+		"@trpc/server": "catalog:",
+		"@trpc/tanstack-react-query": "catalog:",
+		"react": "^19.1.0",
+		"react-dom": "^19.1.0",
+		"tailwindcss": "^4.1.5"
+	},
+	"devDependencies": {
+		"@types/node": "^22.15.3",
+		"@types/react": "^19.1.0",
+		"@types/react-dom": "^19.1.1",
+		"@vitejs/plugin-react": "^4.3.4",
+		"eslint": "^9.26.0",
+		"typescript": "^5.8.2",
+		"vite": "^6.1.1"
+	},
+	"version": "11.1.2"
 }
