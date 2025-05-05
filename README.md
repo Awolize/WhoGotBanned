@@ -1,19 +1,28 @@
-# A minimal React tRPC example
+# "Who got banned", a small simple name matcher for League of Legends
 
-Requires node 18 (for global fetch).
+Developed using node 22 (requires 18, for global fetch).
 
 ## Playing around
 
 ```bash
-npm i
-npm run dev
+pnpm i
+pnpm run dev
 ```
-
-Try editing the ts files to see the type checking in action :)
 
 ## Building
 
 ```bash
-npm run build
-npm run start
+pnpm run build
+pnpm run start
 ```
+
+## Docker
+
+```bash
+docker build .
+```
+
+
+## Template credit:
+
+based on "A minimal React tRPC example" + my own changes.
