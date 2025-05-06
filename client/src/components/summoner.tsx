@@ -56,7 +56,12 @@ export function Summoner({ match, user }: { match: Match; user: string }) {
 				<div
 					className="rounded-xl h-2 w-2"
 					style={{
-						backgroundColor: teamColors[teamKey] || "gray",
+						backgroundColor:
+							teamKey === 1
+								? teamColors[1]
+								: teamKey === 2
+									? teamColors[2]
+									: "gray",
 					}}
 				/>
 			</div>
