@@ -43,7 +43,7 @@ export function LandingPage() {
 				<div
 					className={`absolute inset-0 bg-background -z-10 rounded ${theme === "dark" ? "opacity-70" : "opacity-60"} `}
 				/>
-				<h1 className="text-center text-xl">Who got banned?</h1>
+				<h1 className="text-center text-xl uppercase">Who got banned?</h1>
 				<Input
 					value={user1}
 					onChange={(e) => setUser1(e.target.value)}
