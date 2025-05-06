@@ -59,24 +59,26 @@ export function LandingPage() {
 				)}
 			</div>
 
-			<Dialog open={open} onOpenChange={setOpen}>
-				<DialogContent className="max-h-[80vh] overflow-hidden">
-					<DialogHeader>
-						<DialogTitle>
-							Common Matches{" "}
-							{commonMatchesQuery.data?.matches.length
-								? `(${commonMatchesQuery.data?.matches.length})`
-								: ""}
-						</DialogTitle>
-					</DialogHeader>
+			<div className="absolute flex justify-center items-center">
+				<Dialog open={open} onOpenChange={setOpen}>
+					<DialogContent className="max-h-[80vh] overflow-hidden">
+						<DialogHeader>
+							<DialogTitle>
+								Common Matches{" "}
+								{commonMatchesQuery.data?.matches.length
+									? `(${commonMatchesQuery.data?.matches.length === 5 ? `${commonMatchesQuery.data?.matches.length}+` : commonMatchesQuery.data?.matches.length})`
+									: ""}
+							</DialogTitle>
+						</DialogHeader>
 
-					<MatchesList
-						matches={commonMatchesQuery.data?.matches}
-						user1={user1}
-						user2={user2}
-					/>
-				</DialogContent>
-			</Dialog>
+						<MatchesList
+							matches={commonMatchesQuery.data?.matches}
+							user1={user1}
+							user2={user2}
+						/>
+					</DialogContent>
+				</Dialog>
+			</div>
 		</div>
 	);
 }

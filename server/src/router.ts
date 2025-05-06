@@ -65,6 +65,18 @@ export const appRouter = router({
 
 			return { matches: commonMatches };
 		}),
+	getChampionImage: publicProcedure
+		.input(z.number())
+		.query(async ({ input }) => {
+			const champ = await lolApi.DataDragon.getChampion(input);
+			const [version] = await lolApi.DataDragon.getVersions();
+			return `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champ.image.full}`;
+		}),
+
+	getVersion: publicProcedure.query(async () => {
+		const [version] = await lolApi.DataDragon.getVersions();
+		return version;
+	}),
 });
 
 export type AppRouter = typeof appRouter;
