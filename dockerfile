@@ -31,6 +31,6 @@ COPY --from=build /app/pnpm-workspace.yaml ./server/pnpm-workspace.yaml
 WORKDIR /app/server
 RUN pnpm install --production
 
-EXPOSE 3000
+EXPOSE 2022
 
-CMD ["node", "dist/index.js"]
+CMD ["pnpm", "run", "start"]

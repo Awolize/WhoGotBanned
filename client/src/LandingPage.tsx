@@ -1,19 +1,34 @@
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { trpc } from "./utils/trpc";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
+import { useQuery } from "@tanstack/react-query";
+import { MatchesList } from "@/components/matches-list";
 
 export function LandingPage() {
-	const greeting = useQuery(trpc.greeting.queryOptions({ name: "tRPC user" }));
-	const [inputValue1, setInputValue1] = useState("");
-	const [inputValue2, setInputValue2] = useState("");
+	const [user1, setUser1] = useState("");
+	const [user2, setUser2] = useState("");
+	const [open, setOpen] = useState(false);
 
-	const handleChange1 = (e: React.ChangeEvent<HTMLInputElement>) =>
-		setInputValue1(e.target.value);
-	const handleChange2 = (e: React.ChangeEvent<HTMLInputElement>) =>
-		setInputValue2(e.target.value);
+	const commonMatchesQuery = useQuery({
+		...trpc.riot.queryOptions({
+			user1,
+			user2,
+		}),
+		enabled: false,
+	});
+
+	const onSearch = useCallback(async () => {
+		const res = await commonMatchesQuery.refetch();
+		if (!res.error) setOpen(true);
+	}, [commonMatchesQuery]);
 
 	return (
 		<div className="relative h-screen flex justify-center items-center">
@@ -21,25 +36,47 @@ export function LandingPage() {
 				<ModeToggle />
 			</div>
 
-			<div className="flex flex-col gap-4 w-96">
+			<div className="relative flex flex-col gap-2 w-72 px-8 py-6 scale-105">
+				<div className="absolute inset-0 bg-background opacity-70 -z-10 rounded" />
+				<h1 className="text-center text-xl">Who got banned?</h1>
 				<Input
-					value={inputValue1}
-					onChange={handleChange1}
-					placeholder="First Input"
+					value={user1}
+					onChange={(e) => setUser1(e.target.value)}
+					placeholder="awot#dev"
 				/>
 				<Input
-					value={inputValue2}
-					onChange={handleChange2}
-					placeholder="Second Input"
+					value={user2}
+					onChange={(e) => setUser2(e.target.value)}
+					placeholder="towa#ved"
 				/>
-				<Button
-					onClick={() =>
-						alert(`Input 1: ${inputValue1}, Input 2: ${inputValue2}`)
-					}
-				>
-					Submit
+				<Button onClick={onSearch} disabled={commonMatchesQuery.isLoading}>
+					{commonMatchesQuery.isLoading ? "Searching..." : "Search"}
 				</Button>
+				{commonMatchesQuery.error && (
+					<div className="text-red-500 text-sm">
+						{commonMatchesQuery.error.message}
+					</div>
+				)}
 			</div>
+
+			<Dialog open={open} onOpenChange={setOpen}>
+				<DialogContent className="max-h-[80vh] overflow-hidden">
+					<DialogHeader>
+						<DialogTitle>
+							Common Matches{" "}
+							{commonMatchesQuery.data?.matches.length
+								? `(${commonMatchesQuery.data?.matches.length})`
+								: ""}
+						</DialogTitle>
+					</DialogHeader>
+
+					<MatchesList
+						matches={commonMatchesQuery.data?.matches}
+						user1={user1}
+						user2={user2}
+					/>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }

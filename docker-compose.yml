@@ -1,0 +1,19 @@
+# This is the local dev database
+# $ pnpm prisma migrate dev --name init
+
+services:
+  web:
+    container_name: lol-whogotbanned
+    build:
+      dockerfile: Dockerfile
+    environment:
+      RIOT_API_KEY: ${RIOT_API_KEY}
+    ports:
+      - "8209:2022"
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "traefik.enable=true"
+      - "traefik.http.routers.lol-whogotbanned.rule=Host(`whogotbanned.awot.dev`)"
+      - "traefik.http.routers.lol-whogotbanned.entrypoints=websecure"
+      - "traefik.http.routers.lol-whogotbanned.tls.certresolver=myresolver"

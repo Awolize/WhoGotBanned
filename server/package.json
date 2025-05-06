@@ -2,19 +2,24 @@
 	"name": "server",
 	"private": true,
 	"scripts": {
+		"dev": "tsx watch src/index.ts",
 		"build": "tsc",
-		"dev": "tsx watch index.ts",
-		"lint": "eslint --cache index.ts",
+		"lint": "eslint --cache src/*",
 		"start": "node dist/index.js"
 	},
 	"dependencies": {
+		"@hono/node-server": "^1.14.1",
+		"@hono/trpc-server": "^0.3.4",
 		"@trpc/server": "catalog:",
 		"cors": "^2.8.5",
+		"dotenv": "^16.5.0",
+		"hono": "^4.7.8",
+		"twisted": "^1.63.4",
 		"zod": "^3.24.4"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.13",
-		"@types/node": "^22.13.5",
+		"@types/node": "^22.15.12",
 		"eslint": "^9.26.0",
 		"tsx": "^4.19.3",
 		"typescript": "^5.8.2"
