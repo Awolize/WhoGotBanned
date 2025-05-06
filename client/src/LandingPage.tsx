@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
 import { MatchesList } from "@/components/matches-list";
+import { useTheme } from "@/components/theme-provider";
 
 export function LandingPage() {
 	const [user1, setUser1] = useState("");
@@ -30,6 +31,8 @@ export function LandingPage() {
 		if (!res.error) setOpen(true);
 	}, [commonMatchesQuery]);
 
+	const { theme } = useTheme();
+
 	return (
 		<div className="relative h-screen flex justify-center items-center">
 			<div className="absolute top-4 right-4">
@@ -37,7 +40,9 @@ export function LandingPage() {
 			</div>
 
 			<div className="relative flex flex-col gap-2 w-72 px-8 py-6 scale-105">
-				<div className="absolute inset-0 bg-background opacity-70 -z-10 rounded" />
+				<div
+					className={`absolute inset-0 bg-background -z-10 rounded ${theme === "dark" ? "opacity-70" : "opacity-60"} `}
+				/>
 				<h1 className="text-center text-xl">Who got banned?</h1>
 				<Input
 					value={user1}
