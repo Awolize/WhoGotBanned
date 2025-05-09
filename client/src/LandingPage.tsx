@@ -31,19 +31,14 @@ export function LandingPage() {
 		if (!res.error) setOpen(true);
 	}, [commonMatchesQuery]);
 
-	const { theme } = useTheme();
-
 	return (
 		<div className="relative h-screen flex justify-center items-center">
 			<div className="absolute top-4 right-4">
 				<ModeToggle />
 			</div>
 
-			<div className="relative flex flex-col gap-4 w-72 px-8 py-6 scale-110">
-				<div
-					className={`absolute inset-0 bg-background -z-10 rounded ${theme === "dark" ? "opacity-70" : "opacity-60"} `}
-				/>
-				<h1 className="text-center text-[1.8rem] uppercase font-bold">
+			<div className="relative flex flex-col gap-4 w-72 px-8 py-6 scale-120 bg-background/40 backdrop-blur-xs border rounded">
+				<h1 className="text-center text-[1.8rem] uppercase font-bold ">
 					Who got <span className="text-red-800">banned</span>?
 				</h1>
 				<Input
