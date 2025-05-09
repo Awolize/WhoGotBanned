@@ -39,20 +39,22 @@ export function LandingPage() {
 				<ModeToggle />
 			</div>
 
-			<div className="relative flex flex-col gap-2 w-72 px-8 py-6 scale-105">
+			<div className="relative flex flex-col gap-4 w-72 px-8 py-6 scale-110">
 				<div
 					className={`absolute inset-0 bg-background -z-10 rounded ${theme === "dark" ? "opacity-70" : "opacity-60"} `}
 				/>
-				<h1 className="text-center text-xl uppercase">Who got banned?</h1>
+				<h1 className="text-center text-[1.8rem] uppercase font-bold">
+					Who got <span className="text-red-800">banned</span>?
+				</h1>
 				<Input
 					value={user1}
 					onChange={(e) => setUser1(e.target.value)}
-					placeholder="awot#dev"
+					placeholder="Your name#tag"
 				/>
 				<Input
 					value={user2}
 					onChange={(e) => setUser2(e.target.value)}
-					placeholder="towa#ved"
+					placeholder="Banned name#tag"
 				/>
 				<Button onClick={onSearch} disabled={commonMatchesQuery.isLoading}>
 					{commonMatchesQuery.isLoading ? "Searching..." : "Search"}
