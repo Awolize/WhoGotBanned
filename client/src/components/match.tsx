@@ -17,10 +17,12 @@ export function Match({
 		Record<string, Match["info"]["participants"]>
 	>((acc, participant) => {
 		const teamId = (
-			"playerSubteamId" in participant
+			"playerSubteamId" in participant && participant.playerSubteamId
 				? (participant as { playerSubteamId: number }).playerSubteamId
 				: participant.teamId
 		).toString();
+
+		console.log(participant.playerSubteamId);
 
 		if (!acc[teamId]) acc[teamId] = [];
 		acc[teamId].push(participant);
@@ -44,11 +46,13 @@ export function Match({
 					>
 						<div className="flex items-center justify-between">
 							<h3 className="font-semibold text-gray-300">Team {teamId}</h3>
-							{players[0]?.subteamPlacement && (
-								<span className="text-sm text-gray-400">
-									Placement: {players[0].subteamPlacement}
-								</span>
-							)}
+							<span className="text-sm text-gray-400">
+								{players[0]?.subteamPlacement
+									? `Placement: ${players[0].subteamPlacement}`
+									: players[0]?.win
+										? "Victory"
+										: "Defeat"}
+							</span>
 						</div>
 
 						<ul className="overflow-x-scroll flex flex-col pb-2 gap-1">
