@@ -37,23 +37,31 @@ export function LandingPage() {
 				<ModeToggle />
 			</div>
 
-			<div className="relative flex flex-col gap-4 w-72 px-8 py-6 scale-120 bg-background/40 backdrop-blur-xs border rounded">
-				<h1 className="text-center text-[1.8rem] uppercase font-bold ">
-					Who got <span className="text-red-800">banned</span>?
-				</h1>
-				<Input
-					value={user1}
-					onChange={(e) => setUser1(e.target.value)}
-					placeholder="Your name#tag"
-				/>
-				<Input
-					value={user2}
-					onChange={(e) => setUser2(e.target.value)}
-					placeholder="Banned name#tag"
-				/>
-				<Button onClick={onSearch} disabled={commonMatchesQuery.isLoading}>
-					{commonMatchesQuery.isLoading ? "Searching..." : "Search"}
-				</Button>
+			<div className="relative gap-1 w-72 px-8 py-6 scale-120 bg-background/40 backdrop-blur-xs border rounded">
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						onSearch();
+					}}
+					className="flex flex-col gap-4"
+				>
+					<h1 className="text-center text-[1.8rem] uppercase font-bold ">
+						Who got <span className="text-red-800">banned</span>?
+					</h1>
+					<Input
+						value={user1}
+						onChange={(e) => setUser1(e.target.value)}
+						placeholder="Your name#tag"
+					/>
+					<Input
+						value={user2}
+						onChange={(e) => setUser2(e.target.value)}
+						placeholder="Banned name#tag"
+					/>
+					<Button type="submit" disabled={commonMatchesQuery.isLoading}>
+						{commonMatchesQuery.isLoading ? "Searching..." : "Search"}
+					</Button>
+				</form>
 				{commonMatchesQuery.error && (
 					<div className="text-red-500 text-sm">
 						{commonMatchesQuery.error.message}
