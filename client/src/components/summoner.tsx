@@ -5,9 +5,22 @@ import React from "react";
 
 type Match = RouterOutput["riot"]["matches"][0];
 
-export function Summoner({ match, user }: { match: Match; user: string }) {
-	const player = match.info.participants.find((e) =>
-		user.toLowerCase().includes(e.riotIdGameName?.toLowerCase() ?? ""),
+export function Summoner({
+	match,
+	user,
+	isUser,
+	isBanned,
+}: {
+	match: Match;
+	user: string;
+	isUser: boolean;
+	isBanned: boolean;
+}) {
+	const [userGameName, userTagLine] = user.split("#");
+	const player = match.info.participants.find(
+		(p) =>
+			p.riotIdGameName?.toLowerCase() === userGameName?.toLowerCase() &&
+			p.riotIdTagline?.toLowerCase() === userTagLine?.toLowerCase(),
 	);
 
 	const { data: version } = useQuery({
@@ -17,11 +30,9 @@ export function Summoner({ match, user }: { match: Match; user: string }) {
 
 	if (!player || !version) return null;
 
-	// Build the URL for the champion image
 	const championUrl = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${player.championName}.png`;
 
-	// Generate item URLs dynamically
-	const itemUrls = [
+	const itemIds = [
 		player.item0,
 		player.item1,
 		player.item2,
@@ -29,64 +40,51 @@ export function Summoner({ match, user }: { match: Match; user: string }) {
 		player.item4,
 		player.item5,
 		player.item6,
-	].map((itemId) =>
-		itemId
-			? `https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${itemId}.png`
-			: null,
-	);
+	];
 
-	const teamColors = {
-		1: "blue",
-		2: "red",
-	};
-
-	const teamKey = Math.floor(player.teamId / 100);
+	const borderClass = isUser
+		? "border-1 border-yellow-400"
+		: isBanned
+			? "border-1 border-red-500"
+			: "";
 
 	return (
-		<li className="flex flex-row justify-start items-center gap-4">
-			{/* Champion Image */}
-			<img
-				src={championUrl}
-				className="rounded"
-				alt={player.championName}
-				height={40}
-				width={40}
-			/>
+		<li className="min-w-0">
+			<div
+				className={`flex items-center gap-4 rounded p-2 ${borderClass} min-w-max`} // Added min-w-max
+			>
+				{/* Fixed width elements */}
+				<img
+					src={championUrl}
+					className="h-8 w-8 rounded flex-shrink-0"
+					alt={player.championName}
+				/>
 
-			{/* Player name */}
-			<div className="w-24 text-ellipsis whitespace-nowrap overflow-hidden">
-				{player.riotIdGameName}#{player.riotIdTagline}
-			</div>
+				<div className="w-24 truncate flex-shrink-0">
+					{player.riotIdGameName}
+					{player.riotIdTagline && `#${player.riotIdTagline}`}
+				</div>
 
-			{/* Player Stats */}
-			<div className="w-12">
-				{player.kills}/{player.deaths}/{player.assists}
-			</div>
+				<div className="w-12 font-mono flex-shrink-0">
+					{player.kills}/{player.deaths}/{player.assists}
+				</div>
 
-			{/* Display items dynamically */}
-			<div className="flex gap-1 p-1">
-				{itemUrls.map((itemUrl, idx) =>
-					itemUrl ? (
-						<img
-							key={idx}
-							src={itemUrl}
-							className="rounded"
-							alt={`Item ${idx}`}
-							height={30}
-							width={30}
-						/>
-					) : (
+				<div className="flex gap-1">
+					{itemIds.map((itemId, idx) => (
 						<div
-							key={idx}
-							style={{
-								minHeight: 30,
-								minWidth: 30,
-								backgroundColor: "transparent", // Transparent background
-								border: "1px solid #444", // Border for better visibility
-							}}
-						/>
-					),
-				)}
+							key={`${itemId}-${idx}`}
+							className="h-8 w-8 border border-gray-600 bg-gray-800 flex-shrink-0"
+						>
+							{itemId > 0 && (
+								<img
+									src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${itemId}.png`}
+									className="h-full w-full object-cover"
+									alt={`Item ${itemId}`}
+								/>
+							)}
+						</div>
+					))}
+				</div>
 			</div>
 		</li>
 	);

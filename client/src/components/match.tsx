@@ -7,46 +7,65 @@ export function Match({
 	match,
 	user1,
 	user2,
-}: { match: Match; user1: string; user2: string }) {
+}: {
+	match: Match;
+	user1: string;
+	user2: string;
+}) {
+	// Type-safe team grouping with fallback
 	const groups = match.info.participants.reduce<
-		Record<number, Match["info"]["participants"]>
-	>((acc, p) => {
-		const groupId: number =
-			"playerSubteamId" in p
-				? (p as { playerSubteamId: number }).playerSubteamId
-				: p.teamId;
-		if (!acc[groupId]) acc[groupId] = [];
-		acc[groupId].push(p);
+		Record<string, Match["info"]["participants"]>
+	>((acc, participant) => {
+		const teamId = (
+			"playerSubteamId" in participant
+				? (participant as { playerSubteamId: number }).playerSubteamId
+				: participant.teamId
+		).toString();
+
+		if (!acc[teamId]) acc[teamId] = [];
+		acc[teamId].push(participant);
 		return acc;
 	}, {});
 
-	// Sort groups by the placement of the top player in each team (highest placement first)
-	const sortedGroups = Object.entries(groups).sort(
-		([groupIdA, playersA], [groupIdB, playersB]) =>
-			playersA[0].subteamPlacement - playersB[0].subteamPlacement,
-	);
+	// Sort teams by placement
+	const sortedTeams = Object.entries(groups).sort(([, teamA], [, teamB]) => {
+		const placementA = teamA[0]?.subteamPlacement ?? Number.POSITIVE_INFINITY;
+		const placementB = teamB[0]?.subteamPlacement ?? Number.POSITIVE_INFINITY;
+		return placementA - placementB;
+	});
 
 	return (
-		<li key={match.metadata.matchId} className="space-y-8">
-			<div className="grid grid-cols-2 gap-2">
-				{sortedGroups.map(([groupId, players]) => (
-					<ul key={groupId} className="flex flex-col gap-1">
-						Placement: {players[0].subteamPlacement}
-						{players.map((summoner) => {
-							const tag = `${summoner.riotIdGameName}#${summoner.riotIdTagline}`;
-							const isUser = tag === user1;
-							const isBanned = tag === user2;
+		<li className="space-y-4 p-4 bg-gray-900 rounded-lg shadow-lg">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+				{sortedTeams.map(([teamId, players]) => (
+					<div
+						key={teamId}
+						className="border border-gray-700 rounded-lg pt-2 px-2 bg-gray-800 max-w-screen "
+					>
+						<div className="flex items-center justify-between">
+							<h3 className="font-semibold text-gray-300">Team {teamId}</h3>
+							{players[0]?.subteamPlacement && (
+								<span className="text-sm text-gray-400">
+									Placement: {players[0].subteamPlacement}
+								</span>
+							)}
+						</div>
 
-							return (
-								<div
-									key={summoner.puuid}
-									className={`${isUser ? "border-2 border-yellow-400 rounded" : isBanned ? "border-2 border-red-500 rounded" : ""}`}
-								>
-									<Summoner match={match} user={tag} />
-								</div>
-							);
-						})}
-					</ul>
+						<ul className="overflow-x-scroll flex flex-col pb-2 gap-1">
+							{players.map((participant) => {
+								const tag = `${participant.riotIdGameName}#${participant.riotIdTagline}`;
+								return (
+									<Summoner
+										key={participant.puuid}
+										match={match}
+										user={tag}
+										isUser={tag === user1}
+										isBanned={tag === user2}
+									/>
+								);
+							})}
+						</ul>
+					</div>
 				))}
 			</div>
 		</li>
