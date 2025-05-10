@@ -11,7 +11,10 @@ export function Match({
 	const groups = match.info.participants.reduce<
 		Record<number, Match["info"]["participants"]>
 	>((acc, p) => {
-		const groupId = p.playerSubteamId ?? p.teamId;
+		const groupId: number =
+			"playerSubteamId" in p
+				? (p as { playerSubteamId: number }).playerSubteamId
+				: p.teamId;
 		if (!acc[groupId]) acc[groupId] = [];
 		acc[groupId].push(p);
 		return acc;
