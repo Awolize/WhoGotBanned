@@ -53,6 +53,8 @@ export const appRouter = router({
 		.query(async ({ input }) => {
 			const group = RegionGroups.EUROPE;
 
+			console.log("Comparing: ", input.user1, input.user2);
+
 			const commonMatchIds = (
 				await findCommonMatches(input.user1, input.user2, group)
 			).slice(0, 5);
