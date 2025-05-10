@@ -22,8 +22,6 @@ export function Match({
 				: participant.teamId
 		).toString();
 
-		console.log(participant.playerSubteamId);
-
 		if (!acc[teamId]) acc[teamId] = [];
 		acc[teamId].push(participant);
 		return acc;
