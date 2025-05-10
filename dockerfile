@@ -31,6 +31,6 @@ COPY --from=build /app/pnpm-workspace.yaml ./server/pnpm-workspace.yaml
 WORKDIR /app/server
 RUN pnpm install --production
 
-EXPOSE 2022
+EXPOSE 5000
 
 CMD ["pnpm", "run", "start"]

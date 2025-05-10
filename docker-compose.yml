@@ -9,7 +9,7 @@ services:
     environment:
       RIOT_API_KEY: ${RIOT_API_KEY}
     ports:
-      - "8209:2022"
+      - "8209:5000"
     restart: unless-stopped
     labels:
       - "com.centurylinklabs.watchtower.enable=false"

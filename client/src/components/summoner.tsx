@@ -44,28 +44,6 @@ export function Summoner({ match, user }: { match: Match; user: string }) {
 
 	return (
 		<li className="flex flex-row justify-start items-center gap-4">
-			<div
-				style={{
-					minHeight: 30,
-					minWidth: 5,
-					justifyContent: "center",
-					alignItems: "center",
-					display: "flex",
-				}}
-			>
-				<div
-					className="rounded-xl h-2 w-2"
-					style={{
-						backgroundColor:
-							teamKey === 1
-								? teamColors[1]
-								: teamKey === 2
-									? teamColors[2]
-									: "gray",
-					}}
-				/>
-			</div>
-
 			{/* Champion Image */}
 			<img
 				src={championUrl}
@@ -75,13 +53,18 @@ export function Summoner({ match, user }: { match: Match; user: string }) {
 				width={40}
 			/>
 
+			{/* Player name */}
+			<div className="w-24 text-ellipsis whitespace-nowrap overflow-hidden">
+				{player.riotIdGameName}#{player.riotIdTagline}
+			</div>
+
 			{/* Player Stats */}
 			<div className="w-12">
 				{player.kills}/{player.deaths}/{player.assists}
 			</div>
 
 			{/* Display items dynamically */}
-			<div className="flex gap-1">
+			<div className="flex gap-1 p-1">
 				{itemUrls.map((itemUrl, idx) =>
 					itemUrl ? (
 						<img

@@ -12,20 +12,37 @@ export function MatchesList({
 		return <p className="text-muted-foreground text-sm">No matches found.</p>;
 	}
 
+	const getUserTag = (user: string | undefined) => {
+		const match = matches[0];
+		return `${
+			match.info.participants.find(
+				(e) =>
+					`${e.riotIdGameName!.toLowerCase()}#${e.riotIdTagline.toLowerCase()}` ===
+					user?.toLowerCase(),
+			)?.riotIdGameName
+		}#${
+			match.info.participants.find(
+				(e) =>
+					`${e.riotIdGameName!.toLowerCase()}#${e.riotIdTagline.toLowerCase()}` ===
+					user?.toLowerCase(),
+			)?.riotIdTagline
+		}`;
+	};
+
 	return (
 		<div className="h-full overflow-y-auto gap-2 flex flex-col">
-			<ul className="flex flex-row gap-2 text-center">
-				<div className="grow">{user1}</div>
-				<div className="grow">{user2}</div>
-			</ul>
-			<ul className="text-sm space-y-1">
+			<ul className="text-sm space-y-4">
 				{matches.map((match) => (
-					<Match
-						key={match.metadata.matchId}
-						match={match}
-						user1={user1}
-						user2={user2}
-					/>
+					<>
+						{new Date(match.info.gameEndTimestamp).toLocaleDateString()}{" "}
+						{new Date(match.info.gameEndTimestamp).toLocaleTimeString()}
+						<Match
+							key={match.metadata.matchId}
+							match={match}
+							user1={getUserTag(user1)}
+							user2={getUserTag(user2)}
+						/>
+					</>
 				))}
 			</ul>
 		</div>

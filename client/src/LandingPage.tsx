@@ -63,13 +63,14 @@ export function LandingPage() {
 
 			<div className="absolute flex justify-center items-center">
 				<Dialog open={open} onOpenChange={setOpen}>
-					<DialogContent className="max-h-[80vh] overflow-hidden">
+					<DialogContent className="max-h-[80vh] overflow-scroll">
 						<DialogHeader>
 							<DialogTitle>
 								Common Matches{" "}
 								{commonMatchesQuery.data?.matches.length
 									? `(${commonMatchesQuery.data?.matches.length === 5 ? `${commonMatchesQuery.data?.matches.length}+` : commonMatchesQuery.data?.matches.length})`
-									: ""}
+									: ""}{" "}
+								({user1} - {user2})
 							</DialogTitle>
 						</DialogHeader>
 
