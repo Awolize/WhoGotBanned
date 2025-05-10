@@ -65,12 +65,20 @@ export function LandingPage() {
 				<Dialog open={open} onOpenChange={setOpen}>
 					<DialogContent className="max-h-[80vh] overflow-scroll">
 						<DialogHeader>
-							<DialogTitle>
-								Common Matches{" "}
-								{commonMatchesQuery.data?.matches.length
-									? `(${commonMatchesQuery.data?.matches.length === 5 ? `${commonMatchesQuery.data?.matches.length}+` : commonMatchesQuery.data?.matches.length})`
-									: ""}{" "}
-								({user1} - {user2})
+							<DialogTitle className="flex flex-col gap-1 justify-center items-center">
+								<div className="flex flex-row gap-1 justify-center items-center">
+									You have
+									<div
+										className="border border-muted-foreground px-2 py-0.5 rounded-md text-sm font-medium bg-muted hover:bg-muted/70 transition-colors"
+										title="To save system resources, the list is limited to the latest 5."
+									>
+										{commonMatchesQuery.data?.matches.length
+											? `${commonMatchesQuery.data?.matches.length === 5 ? `${commonMatchesQuery.data?.matches.length}+` : commonMatchesQuery.data?.matches.length}`
+											: ""}
+									</div>
+									Matches in common.{" "}
+								</div>
+								{user1} - {user2}
 							</DialogTitle>
 						</DialogHeader>
 
