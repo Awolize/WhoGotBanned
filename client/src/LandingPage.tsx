@@ -84,7 +84,12 @@ export function LandingPage() {
 											? `${commonMatchesQuery.data?.matches.length === 5 ? `${commonMatchesQuery.data?.matches.length}+` : commonMatchesQuery.data?.matches.length}`
 											: ""}
 									</div>
-									Matches in common.{" "}
+									match
+									{commonMatchesQuery.data &&
+									commonMatchesQuery.data.matches.length > 1
+										? "es"
+										: ""}{" "}
+									in common.
 								</div>
 								{user1} - {user2}
 							</DialogTitle>
